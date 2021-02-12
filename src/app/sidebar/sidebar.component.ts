@@ -55,6 +55,7 @@ export const ROUTES: RouteInfo[] = [{
         collapse: 'seguridad',
         children: [
             {path: 'crearusuario', title: 'Crear Usuario', ab:'CU'},
+            {path: 'qr', title: 'QR', ab:'QR'},
         ]
     }
     ,{
