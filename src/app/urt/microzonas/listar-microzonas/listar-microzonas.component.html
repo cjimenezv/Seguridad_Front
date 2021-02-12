@@ -1,0 +1,40 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-header-icon card-header-rose">
+                    <div class="card-icon">
+                      <i class="material-icons">assignment</i>
+                    </div>
+                    <h4 class="card-title ">Lista de Microzonas</h4>
+                  </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table">
+                                <thead class="text-primary">
+                                      <tr>
+                                        <th>Id</th>
+                                        <th>Estado</th>
+                                        <th>Nombre</th>
+                                        <th>Numero Acto</th>
+                                        <th>Texto</th>
+                                      </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let microzona of listaMicrozonas; index as i">
+                                        <td>{{ microzona.idMicrozona }}</td>
+                                        <td>{{ microzona.motivoEstado }}</td>
+                                        <td>{{ microzona.nombreMicrozona }}</td>
+                                        <td>{{ microzona.numeroActoMicrozona }}</td>
+                                        <td class="text-primary">{{ microzona.txMicrozona }}</td>
+                                    </tr>
+                                </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
