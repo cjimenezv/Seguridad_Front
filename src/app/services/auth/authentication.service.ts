@@ -5,10 +5,9 @@ import { map, catchError } from 'rxjs/operators';
 
 
 
-
-
 import { environment, listaURLUsuarios } from 'src/environments/environment';
 import { User } from 'src/app/models/auth/user';
+import { Respuesta } from 'src/app/models/respuesta';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private _http: HttpClient) {
       this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
       this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -33,7 +32,7 @@ export class AuthenticationService {
       .set('username', username)
       .set('password', password);
 
-      return this.http.post<any>(`${environment.apiUrlSeguridad}/seguridad/autenticar`, parametros)
+      return this._http.post<any>(`${environment.apiUrlSeguridad}/seguridad/autenticar`, parametros)
           .pipe(map(dato => {
              let user = dato.objeto;
               // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -53,13 +52,23 @@ export class AuthenticationService {
 
   /**METODO QUE ME PERMITE CREAR UN TERCERO */
   crear(usuario: User){
-    return this.http.post<any>( listaURLUsuarios.urladicionarUsuario ,usuario)
+    return this._http.post<Respuesta>( listaURLUsuarios.urladicionarUsuario ,usuario)
         .pipe(  catchError( this.controlExcepcion )  )
     ;
   }
 
-  controlExcepcion( _error: HttpErrorResponse ){
-    return throwError(_error);
-  }
+   /**METODO QUE PERMITE NOTIFICAR A UN USUARIO SOBRE LA CREACION */
+   notificarRegistroUsuarioById(id: any): Observable<Respuesta>  {
+    const parametros = new HttpParams()
+            .set('id', id);
+
+    return  this._http.get<Respuesta>( listaURLUsuarios.urlnotificarRegistroUsuarioById , {params: parametros} )
+            .pipe(  catchError( this.controlExcepcion )  ) ;
+
+    }
+
+    controlExcepcion( _error: HttpErrorResponse ){
+      return throwError(_error);
+    }
 
 }

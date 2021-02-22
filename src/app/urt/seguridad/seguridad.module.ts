@@ -9,6 +9,7 @@ import { SelectModule } from 'ng2-select';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MaterialModule } from 'src/app/app.module';
 
+
 import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 import { FieldErrorDisplayComponent } from 'src/app/forms/validationforms/field-error-display/field-error-display.component';
 

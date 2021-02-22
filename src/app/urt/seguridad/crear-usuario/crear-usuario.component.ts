@@ -3,9 +3,11 @@ import {FormControl, FormGroupDirective, NgForm, Validators, FormGroup} from '@a
 import {ErrorStateMatcher} from '@angular/material/core';
 import { FormBuilder, AbstractControl } from '@angular/forms';
 import swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from "src/app/services/auth/authentication.service";
 import { User } from 'src/app/models/auth/user';
+import { Respuesta } from 'src/app/models/respuesta';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -43,6 +45,7 @@ export class CrearUsuarioComponent {
   constructor(
     private formBuilder: FormBuilder,
     private _authenticationService: AuthenticationService,
+    private _router: Router
     ) {}
 
    isFieldValid(form: FormGroup, field: string) {
@@ -73,8 +76,6 @@ export class CrearUsuarioComponent {
        this.usuario.primerApellido = this.primerApellido.value;
        this.usuario.segundoApellido = this.segundoNombre.value;
        this.usuario.token = '';
-       console.log('El registro es valido');
-       console.log('email:' + this.email.value);
        this._authenticationService.crear(this.usuario)
           .subscribe(
             data =>  this.exitoEnRegistro( data ),
@@ -87,24 +88,25 @@ export class CrearUsuarioComponent {
    }
 
    exitoEnRegistro(datos){
-    console.log('Sucess!!...:' + datos);
-    //this.desaOhabilitarCampos();
-    //this.esNuevoDisabled = false;
-    this.mostrarPopapExitoso();  
-    //sessionStorage.removeItem("datosformatercero");  
+      this.usuario = datos.objeto;
+      console.log('Sucess!!...:' + datos);
+      //this.desaOhabilitarCampos();
+      //this.esNuevoDisabled = false;
+      this.mostrarPopapExitoso("Usuario Creado!!!", "El usuario ha sido creado satisfactoriamente!!!");  
+      //sessionStorage.removeItem("datosformatercero");  
   }
 
   noExitoEnRegistro(estadoError){
     console.error( estadoError );
     this.usuarioCreado = false;
-    this.mostrarPopapNoExitoso();  
+    this.mostrarPopapNoExitoso( "Problemas en la creación del usuario!", "Existen problemas en la creación del usuario"  );  
     //sessionStorage.removeItem("datosformatercero");  
   }
 
-  mostrarPopapExitoso(){
+  mostrarPopapExitoso(titulo, texto){
     swal.fire({
-      title: "Usuario Creado!",
-      text: "El cliente ha sido creado satisfactoriamente!",
+      title: titulo,
+      text: texto,
       buttonsStyling: false,
       customClass:{
         confirmButton: "btn btn-success",
@@ -113,10 +115,10 @@ export class CrearUsuarioComponent {
   });
   }
 
-  mostrarPopapNoExitoso(){
+  mostrarPopapNoExitoso(titulo, texto){
     swal.fire({
-      title: "Problemas en la creación del tercero!",
-      text: "Existen problemas en la creación del tercero",
+      title: titulo,
+      text: texto,
       buttonsStyling: false,
       customClass:{
         confirmButton: "btn btn-info",
@@ -173,6 +175,38 @@ export class CrearUsuarioComponent {
     }else{
       this.validTextType = false;
     }
+  }
+
+
+  onNotify(){
+    console.log('Vamos a notofocar');
+    this._authenticationService.notificarRegistroUsuarioById(this.usuario.idUsuario)
+          .subscribe(
+            data =>  this.exitoEnNotificacion( data ),
+            error => this.noExitoEnNotificacion( error.statusText )
+    ) ;
+  }
+
+  exitoEnNotificacion(datos){
+    var respuesta: Respuesta = datos;
+    console.log( datos );
+    if ( respuesta.exitosa )
+      this.mostrarPopapExitoso("Usuario Notificado!!!", "El usuario ha sido notificado!!!");  
+    else
+      this.mostrarPopapNoExitoso( "Problemas en la notificacion al usuario!", "Existen problemas en la notificacion al usuario"  );  
+    //sessionStorage.removeItem("datosformatercero");  
+  }
+
+  noExitoEnNotificacion(estadoError){
+    console.error( estadoError );
+    this.usuarioCreado = false;
+    this.mostrarPopapNoExitoso( "Problemas en la notificacion al usuario!", "Existen problemas en la notificacion al usuario"  );  
+    //sessionStorage.removeItem("datosformatercero");  
+  }
+
+  onQR(){
+    let id="fdsfdsfdsf"
+    this._router.navigate(['/pages/qr', id]);
   }
 
 

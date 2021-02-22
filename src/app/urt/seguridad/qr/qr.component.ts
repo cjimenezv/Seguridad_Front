@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QrComponent implements OnInit {
 
-  public myAngularxQrCode: string = null;
+  public myAngularxQrCode: string = "";
 
   constructor() { 
     this.myAngularxQrCode = 'Voy a  alimentar este QR con la semilla';
