@@ -44,8 +44,8 @@ export class CrearUsuarioComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private _authenticationService: AuthenticationService,
-    private _router: Router
+    private _router: Router,
+    private _authenticationService: AuthenticationService
     ) {}
 
    isFieldValid(form: FormGroup, field: string) {
@@ -74,7 +74,7 @@ export class CrearUsuarioComponent {
        this.usuario.primerNombre = this.primerNombre.value;
        this.usuario.segundoNombre = this.segundoNombre.value;
        this.usuario.primerApellido = this.primerApellido.value;
-       this.usuario.segundoApellido = this.segundoNombre.value;
+       this.usuario.segundoApellido = this.segundoApellido.value;
        this.usuario.token = '';
        this._authenticationService.crear(this.usuario)
           .subscribe(

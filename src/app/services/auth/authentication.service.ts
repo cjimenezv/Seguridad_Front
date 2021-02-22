@@ -67,6 +67,17 @@ export class AuthenticationService {
 
     }
 
+       /**METODO QUE PERMITE NOTIFICAR A UN USUARIO SOBRE LA CREACION */
+    verificarTokenIngreso(tokenIngreso: any): Observable<Respuesta>  {
+    const parametros = new HttpParams()
+            .set('tokenIngreso', tokenIngreso);
+
+    return  this._http.get<Respuesta>( listaURLUsuarios.urlverificarTokenIngreso , {params: parametros} )
+            .pipe(  catchError( this.controlExcepcion )  ) ;
+
+    }
+
+
     controlExcepcion( _error: HttpErrorResponse ){
       return throwError(_error);
     }

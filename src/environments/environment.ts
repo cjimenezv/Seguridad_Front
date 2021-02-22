@@ -35,4 +35,5 @@ export const listaURLUsuarios = {
   urlgetUsuario: crearURLSeguridad('/usuarios/getUsuarioById'),
   urleliminarUsuario: crearURLSeguridad('/usuarios/eliminarUsuario'),
   urlnotificarRegistroUsuarioById: crearURLSeguridad('/usuarios/notificarRegistroUsuarioById'),
+  urlverificarTokenIngreso: crearURLSeguridad('/usuarios/verificarTokenIngreso'),
 }
